@@ -142,12 +142,42 @@
                       0))))
     (format nil "(~a: ~d%)" name (round quality))))
 
+;;;; RAM
+(defun ram-usage ()
+  (let ((usage (uiop:run-program "sh /home/ryan/scripts/mem.sh" :output :string)))
+    (format nil "~a" usage)))
+
+;;;; Volume
+(defun vol ()
+  (let ((v (uiop:run-program "sh /home/ryan/scripts/volume.sh" :output :string)))
+    (format nil "Volume: ~a%" v)))
+
+;;;; Weather
+(defun weather ()
+  (let ((w (uiop:run-program "sh /home/ryan/scripts/weather.sh" :output :string)))
+    (format nil "~a" w)))
+
+;;;; CPU
+(defun cpu-usage ()
+  (let ((c (uiop:run-program "sh /home/ryan/scripts/cpu.sh" :output :string)))
+    (format nil "CPU: ~a%" c)))
+
+;;;; Synergy
+(defun synergy-running ()
+  (let ((s (uiop:run-program "sh /home/ryan/scripts/synergy-running.sh" :output :string)))
+    (format nil "~a" s)))
+
 (defun display-info (frame pane)
   (format pane " " )
   (multiple-value-bind (sec min h d m y) (decode-universal-time (get-universal-time))
     (format pane "~d/~2,'0d/~2,'0d ~2,'0d:~2,'0d:~2,'0d " y m d h min sec))
   (present *batteries* '((battery) :what-present :short))
-  (format pane "~a" (wireless))
+  (format pane "~a|" (wireless))
+  (format pane "~a|" (ram-usage))
+  (format pane "~a|" (vol))
+  (format pane "~a|" (weather))
+  (format pane "~a|" (cpu-usage))
+  (format pane "~a|" (synergy-running))
   (loop for frame in (managed-frames)
      when (typep frame 'application-frame)
      do

@@ -112,12 +112,12 @@
          (loop for key in *grabbed-keystrokes* do
               (grab/ungrab-keystroke key))
 		     ;; (xlib:intern-atom  (clim-clx::clx-port-window (find-port)) :_MOTIF_WM_HINTS)
-		    
+
          (setf (xlib:window-event-mask (clim-clx::clx-port-window (find-port))) '(:substructure-notify :substructure-redirect))
          #+clx-ext-randr
          (xlib:rr-select-input (clim-clx::clx-port-window (find-port)) '(:screen-change-notify-mask :crtc-change-notify-mask))
          (call-next-method))
-    (loop for key in *grabbed-keystrokes* do 
+    (loop for key in *grabbed-keystrokes* do
          (grab/ungrab-keystroke key :ungrab t))))
 
 
@@ -161,11 +161,11 @@
        (setf (active-frame (port *application-frame*)) (car frames))
        (uiop:launch-program ,sh-command))))
 
-(define-run-or-raise com-emacs "emacsclient -c" "emacs" (#\E :super))
+(define-run-or-raise com-emacs "emacs" "emacs" (#\E :super))
 
-(define-run-or-raise com-browser "next" "next" (#\b :super))
+(define-run-or-raise com-browser "palemoon" "Navigator" (#\b :super))
 
-(define-run-or-raise com-terminal "urxvtcd +sb -e tmux new -A -s default" "urxvt" (#\c :super))
+(define-run-or-raise com-terminal "st" "st" (#\c :super))
 
 (define-doors-command-with-grabbed-keystroke (com-listener :name t :keystroke (#\l :super))
     ()
@@ -291,19 +291,19 @@
 
 ;;;; MULTIMEDIA
 
-(define-doors-command-with-grabbed-keystroke (com-audio-mute :name t :keystroke (:xf86-audio-mute)) 
+(define-doors-command-with-grabbed-keystroke (com-audio-mute :name t :keystroke (:xf86-audio-mute))
     ()
   (let* ((out (uiop:run-program "amixer -D default sset Master toggle" :output :string))
          (state (cl-ppcre:scan-to-strings "\\[(on|off)\\]" out)))
     (format (frame-query-io *application-frame*) "Audio: ~a" state)))
 
-(define-doors-command-with-grabbed-keystroke (com-audio-increase-volume :name t :keystroke (:xf86-audio-raise-volume)) 
+(define-doors-command-with-grabbed-keystroke (com-audio-increase-volume :name t :keystroke (:xf86-audio-raise-volume))
     ()
   (let* ((out (uiop:run-program "amixer -D default sset Master 1%+" :output :string))
          (state (cl-ppcre:scan-to-strings "\\[([0-9]*%)\\]" out)))
     (format (frame-query-io *application-frame*) "Audio Volume: ~a" state)))
 
-(define-doors-command-with-grabbed-keystroke (com-audio-decrease-volume :name t :keystroke (:xf86-audio-lower-volume)) 
+(define-doors-command-with-grabbed-keystroke (com-audio-decrease-volume :name t :keystroke (:xf86-audio-lower-volume))
     ()
   (let* ((out (uiop:run-program "amixer -D default sset Master 1%-" :output :string))
          (state (cl-ppcre:scan-to-strings "\\[([0-9]*%)\\]" out)))
@@ -324,4 +324,3 @@
 
 (defun start-tray ()
   (doors-systray:start-tray (find-pane-named *wm-application* 'tray)))
-
