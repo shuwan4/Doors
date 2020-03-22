@@ -152,7 +152,7 @@
   (let ((table (slot-value (port *wm-application*) 'clim-doors::foreign-mirror->sheet)))
     (loop for pane being the hash-value of table
         when (string= win-class (xlib:get-wm-class (clim-doors::foreign-xwindow pane)))
-         collect (pane-frame pane))))
+       collect (pane-frame pane))))
 
 (defmacro define-run-or-raise (name sh-command win-class keystroke)
   `(define-doors-command-with-grabbed-keystroke (,name :name t :keystroke ,keystroke)
@@ -161,11 +161,28 @@
        (setf (active-frame (port *application-frame*)) (car frames))
        (uiop:launch-program ,sh-command))))
 
+(defmacro define-run-or-raise-set-win-class (name sh-command win-class keystroke new-win-class)
+    `(define-doors-command-with-grabbed-keystroke (,name :name t :keystroke ,keystroke)
+       ()
+     (alexandria:if-let (frames (find-foreign-application ,new-win-class))
+       (setf (active-frame (port *application-frame*)) (car frames))
+       (progn
+         (uiop:launch-program ,sh-command)
+         (loop while (not (car (last (find-foreign-application ,win-class))))
+              do (sleep 1))
+         (xlib:set-wm-class
+           (clim-doors::foreign-xwindow
+            (car (last (find-foreign-application ,win-class)))) ,new-win-class ,new-win-class)
+         ))))
+
+(define-run-or-raise-set-win-class com-file "st -e lf" "st" (#\z :super) "lf")
+
 (define-run-or-raise com-emacs "emacs" "emacs" (#\E :super))
 
 (define-run-or-raise com-browser "palemoon" "Navigator" (#\b :super))
 
 (define-run-or-raise com-terminal "st" "st" (#\c :super))
+
 
 (define-doors-command-with-grabbed-keystroke (com-listener :name t :keystroke (#\l :super))
     ()
@@ -244,6 +261,7 @@
 (define-doors-command-with-grabbed-keystroke (com-dmenu :keystroke (#\Return :super))
     ()
   (uiop:run-program "dmenu_run -i -b -p \"run command:\""))
+
 
 (define-doors-command (com-run :name t)
     ((command `(member-sequence
