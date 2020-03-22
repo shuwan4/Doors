@@ -161,21 +161,9 @@
        (setf (active-frame (port *application-frame*)) (car frames))
        (uiop:launch-program ,sh-command))))
 
-(defmacro define-run-or-raise-set-win-class (name sh-command win-class keystroke new-win-class)
-    `(define-doors-command-with-grabbed-keystroke (,name :name t :keystroke ,keystroke)
-       ()
-     (alexandria:if-let (frames (find-foreign-application ,new-win-class))
-       (setf (active-frame (port *application-frame*)) (car frames))
-       (progn
-         (uiop:launch-program ,sh-command)
-         (loop while (not (car (last (find-foreign-application ,win-class))))
-              do (sleep 1))
-         (xlib:set-wm-class
-           (clim-doors::foreign-xwindow
-            (car (last (find-foreign-application ,win-class)))) ,new-win-class ,new-win-class)
-         ))))
+(define-run-or-raise com-file "st -c lf -e lf" "lf" (#\z :super))
 
-(define-run-or-raise-set-win-class com-file "st -e lf" "st" (#\z :super) "lf")
+(define-run-or-raise com-pdf "zathura" "org.pwmt.zathura" (#\p :super))
 
 (define-run-or-raise com-emacs "emacs" "emacs" (#\E :super))
 
