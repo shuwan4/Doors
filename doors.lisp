@@ -161,7 +161,7 @@
        (setf (active-frame (port *application-frame*)) (car frames))
        (uiop:launch-program ,sh-command))))
 
-(define-run-or-raise com-file "st -c lf -e lf" "lf" (#\z :super))
+(define-run-or-raise com-file "st -c lf -n lf -e lf" "lf" (#\z :super))
 
 (define-run-or-raise com-pdf "zathura" "org.pwmt.zathura" (#\p :super))
 
