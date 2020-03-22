@@ -161,6 +161,10 @@
        (setf (active-frame (port *application-frame*)) (car frames))
        (uiop:launch-program ,sh-command))))
 
+;; DEBUG wm-classes for all frames
+;; (loop for pane being the hash-value of (slot-value (port *wm-application*) 'clim-doors::foreign-mirror->sheet)
+;;            collect (xlib:get-wm-class (clim-doors::foreign-xwindow pane)))
+
 (define-run-or-raise com-file "st -c lf -n lf -e lf" "lf" (#\z :super))
 
 (define-run-or-raise com-pdf "zathura" "org.pwmt.zathura" (#\p :super))
