@@ -64,7 +64,7 @@
   (format pane " " )
   (multiple-value-bind (sec min h d m y) (decode-universal-time (get-universal-time))
     (format pane "~d/~2,'0d/~2,'0d ~2,'0d:~2,'0d:~2,'0d " y m d h min sec))
-  (format pane "~a|" (wireless))
+;; (format pane "~a|" (wireless))
   (format pane "~a|" (ram-usage))
   (format pane "~a|" (vol))
   (format pane "~a|" (weather))
