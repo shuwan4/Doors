@@ -18,6 +18,19 @@
 (in-package :doors)
 
 ;;;; Wireless
+(defun openbsd-wireless ()
+  (let* ((ifconfig-output (uiop:run-program "ifconfig" :output :string))
+         (regex-scan (cl-ppcre:scan-to-strings
+                                   (cl-ppcre:create-scanner
+                                    "ieee80211:\ nwid \[^ ]* .*dBm"
+                                    :single-line-mode t)
+                                   ifconfig-output))
+         (easier-output (uiop:split-string regex-scan :separator " "))
+         (id (nth 2 easier-output))
+         (str (nth 7 easier-output)))
+   (format nil "(~a: ~a)" id str)
+    ))
+
 (defun wireless ()
   (let* ((iwoutput (uiop:run-program "iwconfig" :output :string))
          (regex-scan (nth-value 1 (cl-ppcre:scan-to-strings
@@ -64,12 +77,12 @@
   (format pane " " )
   (multiple-value-bind (sec min h d m y) (decode-universal-time (get-universal-time))
     (format pane "~d/~2,'0d/~2,'0d ~2,'0d:~2,'0d:~2,'0d " y m d h min sec))
-;; (format pane "~a|" (wireless))
-  (format pane "~a|" (ram-usage))
-  (format pane "~a|" (vol))
-  (format pane "~a|" (weather))
-  (format pane "~a|" (cpu-usage))
-  (format pane "~a|" (synergy-running))
+  (format pane "~a|" (openbsd-wireless))
+  ;;(format pane "~a|" (ram-usage))
+  ;;(format pane "~a|" (vol))
+  ;;(format pane "~a|" (weather))
+  ;;(format pane "~a|" (cpu-usage))
+  ;;(format pane "~a|" (synergy-running))
   (loop for frame in (managed-frames)
      when (typep frame 'application-frame)
      do
