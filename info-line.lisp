@@ -18,6 +18,19 @@
 (in-package :doors)
 
 ;;;; Wireless
+(defun openbsd-wireless ()
+  (let* ((ifconfig-output (uiop:run-program "ifconfig" :output :string))
+         (regex-scan (cl-ppcre:scan-to-strings
+                                   (cl-ppcre:create-scanner
+                                    "ieee80211:\ nwid \[^ ]* .*dBm"
+                                    :single-line-mode t)
+                                   ifconfig-output))
+         (easier-output (uiop:split-string regex-scan :separator " "))
+         (id (nth 2 easier-output))
+         (str (nth 7 easier-output)))
+   (format nil "(~a: ~a)" id str)
+    ))
+
 (defun wireless ()
   (let* ((iwoutput (uiop:run-program "iwconfig" :output :string))
          (regex-scan (nth-value 1 (cl-ppcre:scan-to-strings
@@ -65,6 +78,7 @@
   (multiple-value-bind (sec min h d m y) (decode-universal-time (get-universal-time))
     (with-text-style (pane (make-text-style "Fixedsys Excelsior" "Regular" 12))
 	(format pane "~d/~2,'0d/~2,'0d ~2,'0d:~2,'0d:~2,'0d " y m d h min sec)))
+
   (loop for frame in (managed-frames)
      when (typep frame 'application-frame)
      do
