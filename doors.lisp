@@ -2,7 +2,7 @@
 ;;;;
 ;;;; This library is free software; you can redistribute it and/or
 ;;;; modify it under the terms of the GNU Lesser General Public
-;;;; License as published by the Free Software Foundation; either
+;;;; License as published by the Free Software Fuondation; either
 ;;;; version 2.1 of the License, or (at your option) any later version.
 ;;;;
 ;;;; This library is distributed in the hope that it will be useful,
@@ -41,9 +41,13 @@
   (:layouts (with-interactor (vertically (:width (graft-width (find-graft)) :height (graft-height (find-graft)))
                                (:fill desktop) (make-pane 'clime:box-adjuster-gadget)  interactor pointer-doc (horizontally () (:fill info) tray)))
             (without-interactor (vertically (:width (graft-width (find-graft)) :height (graft-height (find-graft)))
-                                  (:fill desktop) pointer-doc (horizontally () (:fill info) tray)))))
+                                  (:fill desktop) (horizontally () (:fill info) tray)))))
+
+(defmethod generate-panes :after (fm (frame doors))
+  (clime:port-all-font-families (port fm)))
 
 (defun managed-frames (&optional (wm *wm-application*))
+  (clime:port-all-font-families (port wm))
   (loop for fm in (climi::frame-managers (port wm))
      unless (eql fm (frame-manager wm))
      appending (frame-manager-frames fm)))
@@ -167,13 +171,13 @@
 
 (define-run-or-raise com-file "st -c lf -n lf -e lf" "lf" (#\z :super))
 
-(define-run-or-raise com-pdf "zathura" "org.pwmt.zathura" (#\p :super))
+(define-run-or-raise com-pdf "zathura" "org.pwmt.zathura" (#\B :super))
 
-(define-run-or-raise com-emacs "emacs" "emacs" (#\E :super))
+(define-run-or-raise com-emacs "emacs-26.3" "emacs-26_3" (#\E :super))
 
-(define-run-or-raise com-browser "palemoon" "Navigator" (#\b :super))
+(define-run-or-raise com-browser "firefox" "Navigator" (#\b :super))
 
-(define-run-or-raise com-terminal "st" "st" (#\c :super))
+(define-run-or-raise com-terminal "xterm" "xterm" (#\c :super))
 
 
 (define-doors-command-with-grabbed-keystroke (com-listener :name t :keystroke (#\l :super))

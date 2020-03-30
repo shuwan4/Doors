@@ -16,7 +16,7 @@
 ;;;; USA
 
 (defpackage #:clim-doors
-  (:use :clim :clim-lisp :clim-backend :clim-xcommon :clim-clx)
+  (:use :clim :clim-lisp :clim-backend :clim-xcommon :clim-extensions :clim-clx)
   (:import-from :alexandria
                 #:when-let*)
   (:import-from :climi
