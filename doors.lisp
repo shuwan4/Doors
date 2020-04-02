@@ -173,7 +173,7 @@
 
 (define-run-or-raise com-pdf "zathura" "org.pwmt.zathura" (#\B :super))
 
-(define-run-or-raise com-emacs "emacs-26.3" "emacs-26_3" (#\E :super))
+(define-run-or-raise com-emacs "emacsclient -c" "emacs" (#\E :super))
 
 (define-run-or-raise com-browser "firefox" "Navigator" (#\b :super))
 

@@ -77,16 +77,16 @@
   (format pane " " )
   (multiple-value-bind (sec min h d m y) (decode-universal-time (get-universal-time))
     (with-text-style (pane (make-text-style "Fixedsys Excelsior" "Regular" 12))
-	(format pane "~d/~2,'0d/~2,'0d ~2,'0d:~2,'0d:~2,'0d " y m d h min sec)))
+      (format pane "~d/~2,'0d/~2,'0d ~2,'0d:~2,'0d:~2,'0d " y m d h min sec)))
 
   (loop for frame in (managed-frames)
      when (typep frame 'application-frame)
      do
        (if (eql frame (active-frame (port *wm-application*)))
-             (with-text-style (pane (make-text-style "Fixedsys Excelsior" "Regular" 24))
-               (present frame 'application-frame))
-             (with-text-style (pane (make-text-style "Fixedsys Excelsior" "Regular" 12))
-	       (present frame 'application-frame))
-	     ))
+	   (with-text-style (pane (make-text-style "Fixedsys Excelsior" "Regular" 24))
+	     (present frame 'application-frame))
+	   (with-text-style (pane (make-text-style "Fixedsys Excelsior" "Regular" 12))
+	     (present frame 'application-frame))
+	   ))
   )
 
