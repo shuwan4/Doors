@@ -256,7 +256,7 @@
 
 (define-doors-command-with-grabbed-keystroke (com-dmenu :keystroke (#\Return :super))
     ()
-  (uiop:run-program "dmenu_run -i -b -p \"run command:\""))
+  (uiop:run-program "dmenu_run -fn \"Fixedsys Excelsior\" -i -b -p \"run command:\""))
 
 
 (define-doors-command (com-run :name t)
