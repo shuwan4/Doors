@@ -17,18 +17,23 @@
 ;;;; USA
 
 (asdf:defsystem #:doors
-		:description "A X11 window manager based on McCLIM"
-		:author "Andrea De Michele <andrea.demichele@gmail.com>"
-		:license "LGPL-2.1+"
-        :version "0.0.1"
-		:depends-on (#:alexandria
-                     #:mcclim #:mcclim-doors
-                     #:clim-listener #:climacs #:clim-debugger #:xembed)
-		:serial t
-		:components ((:file "package")
-                     (:file "doors-tray")
-                     (:file "doors")
-                     (:file "info-line")))
+  :defsystem-depends-on (:deploy)
+  :build-operation "deploy-op"
+  :build-pathname "doors"
+  :entry-point "doors:doors"
+  
+  :description "A X11 window manager based on McCLIM"
+  :author "Andrea De Michele <andrea.demichele@gmail.com>"
+  :license "LGPL-2.1+"
+  :version "0.0.1"
+  :depends-on (#:alexandria
+               #:mcclim #:mcclim-doors
+               #:clim-listener #:climacs #:clim-debugger #:xembed)
+  :serial t
+  :components ((:file "package")
+               (:file "doors-tray")
+               (:file "doors")
+               (:file "info-line")))
 
 (defsystem #:mcclim-doors
   :depends-on (#:mcclim-clx
