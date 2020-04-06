@@ -1,0 +1,5 @@
+* Tasks
+- Use environmental variables for the browser (at-least)
+I think we can achieve this by setting a variable that just gets a
+given environment variable and defaults to a typical browser (firefox)
+- Think about using a buffer system (draw menu and pick buffer like StumpWM)

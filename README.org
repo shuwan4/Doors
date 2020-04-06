@@ -1,0 +1,9 @@
+* Doors
+A X11 windows manager based on [McCLIM](https://common-lisp.net/project/mcclim/)
+
+* Compilation
+#+begin_src common-lisp
+(asdf-make :doors)
+#+end_src
+
+You can find the binary inside the bin directory
