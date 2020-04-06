@@ -17,8 +17,8 @@
 ;;;; USA
 
 (asdf:defsystem #:doors
-  :defsystem-depends-on (:deploy)
-  :build-operation "deploy-op"
+  ;; :defsystem-depends-on (:deploy)
+  :build-operation "program-op"
   :build-pathname "doors"
   :entry-point "doors:doors"
   
