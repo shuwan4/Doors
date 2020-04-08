@@ -169,13 +169,22 @@
 ;; (loop for pane being the hash-value of (slot-value (port *wm-application*) 'clim-doors::foreign-mirror->sheet)
 ;;            collect (xlib:get-wm-class (clim-doors::foreign-xwindow pane)))
 
+
+;; Form a hashtable such that the key is the browser and the value is WM_CLASS
+
+(setq browser-ht (make-hash-table :test 'equal))
+(setf (gethash "qutebrowser" browser-ht) "qutebrowser")
+(setf (gethash "chrome" browser-ht) "chromium-browser")
+(setq browser (uiop:getenv "BROWSER"))
+(setq browser-class (gethash browser browser-ht))
+
 (define-run-or-raise com-file "st -c lf -n lf -e /home/ryan/go/bin/lf" "lf" (#\z :super))
 
 (define-run-or-raise com-pdf "zathura" "org.pwmt.zathura" (#\B :super))
 
 (define-run-or-raise com-emacs "emacsclient -c" "emacs" (#\E :super))
 
-(define-run-or-raise com-browser "firefox" "Navigator" (#\b :super))
+(define-run-or-raise com-browser browser browser-class (#\b :super))
 
 (define-run-or-raise com-terminal "st" "st" (#\c :super))
 
