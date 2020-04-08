@@ -169,7 +169,7 @@
 ;; (loop for pane being the hash-value of (slot-value (port *wm-application*) 'clim-doors::foreign-mirror->sheet)
 ;;            collect (xlib:get-wm-class (clim-doors::foreign-xwindow pane)))
 
-(define-run-or-raise com-file "st -c lf -n lf -e lf" "lf" (#\z :super))
+(define-run-or-raise com-file "st -c lf -n lf -e /home/ryan/go/bin/lf" "lf" (#\z :super))
 
 (define-run-or-raise com-pdf "zathura" "org.pwmt.zathura" (#\B :super))
 
@@ -177,8 +177,9 @@
 
 (define-run-or-raise com-browser "firefox" "Navigator" (#\b :super))
 
-(define-run-or-raise com-terminal "xterm" "xterm" (#\c :super))
+(define-run-or-raise com-terminal "st" "st" (#\c :super))
 
+(define-run-or-raise com-capture "/home/ryan/.emacs.d/bin/org-capture" "org-capture" (#\X :super))
 
 (define-doors-command-with-grabbed-keystroke (com-listener :name t :keystroke (#\l :super))
     ()
