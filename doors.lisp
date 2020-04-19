@@ -182,7 +182,7 @@
 
 (define-run-or-raise com-pdf "zathura" "org.pwmt.zathura" (#\B :super))
 
-(define-run-or-raise com-emacs "emacsclient -c" "emacs" (#\E :super))
+(define-run-or-raise com-emacs "emacs" "emacs" (#\E :super))
 
 (define-run-or-raise com-browser browser browser-class (#\b :super))
 
