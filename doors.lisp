@@ -247,6 +247,22 @@
     (when (member frame (managed-frames))
       (com-frame-toggle-fullscreen frame))))
 
+(define-doors-command (com-frame-toggle-tiled :name t)
+    ((frame 'application-frame :default (active-frame (port *application-frame*))))
+  (if (typep (frame-manager frame) 'clim-doors::doors-tile-frame-manager)
+      (progn
+        (setf (frame-manager frame) (find-frame-manager :port (port frame) :fm-type :stack)))
+      (progn
+        (save-frame-geometry frame)
+        (setf (frame-manager frame) (find-frame-manager :port (port frame) :fm-type :tile))))
+  (setf (active-frame (port frame)) frame))
+
+(define-doors-command-with-grabbed-keystroke (com-tiled :name t :keystroke (#\q :super))
+    ()
+  (let ((frame  (active-frame (port *application-frame*))))
+    (when (member frame (managed-frames))
+      (com-frame-toggle-tiled frame))))
+
 (define-doors-command-with-grabbed-keystroke (com-maximize :name t :keystroke (#\m :super))
     ()
   (let ((frame  (active-frame (port *application-frame*))))
