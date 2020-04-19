@@ -63,21 +63,17 @@
   (let ((w (uiop:run-program "sh /home/ryan/scripts/weather.sh" :output :string)))
     (format nil "~a" w)))
 
-;;;; CPU
-(defun cpu-usage ()
-  (let ((c (uiop:run-program "sh /home/ryan/scripts/cpu.sh" :output :string)))
-    (format nil "CPU: ~a%" c)))
-
-;;;; Synergy
-(defun synergy-running ()
-  (let ((s (uiop:run-program "sh /home/ryan/scripts/synergy-running.sh" :output :string)))
-    (format nil "~a" s)))
+(defun status ()
+  (string-trim '(#\Newline)
+               (alexandria:read-file-into-string "/tmp/status")))
 
 (defun display-info (frame pane)
   (format pane " " )
   (multiple-value-bind (sec min h d m y) (decode-universal-time (get-universal-time))
     (with-text-style (pane (make-text-style "Fixedsys Excelsior" "Regular" 12))
       (format pane "~d/~2,'0d/~2,'0d ~2,'0d:~2,'0d:~2,'0d " y m d h min sec)))
+  (with-text-style (pane (make-text-style "Fixedsys Excelsior" "Regular" 12))
+    (format pane "~a" (status)))
 
   (loop for frame in (managed-frames)
      when (typep frame 'application-frame)
