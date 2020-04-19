@@ -173,7 +173,7 @@
 ;; Form a hashtable such that the key is the browser and the value is WM_CLASS
 
 (setq browser-ht (make-hash-table :test 'equal))
-(setf (gethash "qutebrowser" browser-ht) "qutebrowser")
+(setf (gethash "vivaldi-stable" browser-ht) "vivaldi-stable")
 (setf (gethash "chrome" browser-ht) "chromium-browser")
 (setq browser (uiop:getenv "BROWSER"))
 (setq browser-class (gethash browser browser-ht))
